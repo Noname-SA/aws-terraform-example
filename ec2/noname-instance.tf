@@ -157,7 +157,7 @@ resource "aws_instance" "nonameserver" {
     Name = "${var.name_prefix}-Server"
   }
   key_name = var.noname_key_name
-  user_data = templatefile("${path.module}/ec2_setup.sh", {
+  user_data = templatefile("${path.module}/scripts/ec2_setup_${var.os_type}.sh", {
     package_url : var.package_url
   })
 }

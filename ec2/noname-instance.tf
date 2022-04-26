@@ -18,7 +18,7 @@ provider "aws" {
 resource "aws_vpc" "noname_vpc" {
   cidr_block       = var.noname_cidr
   instance_tenancy = "default"
-    tags = {
+  tags = {
     Name = "${var.name_prefix}-vpc"
   }
 }
@@ -33,8 +33,8 @@ resource "aws_internet_gateway" "noname_gw" {
 
 # Creation of Subnet
 resource "aws_subnet" "noname_subnet" {
-  vpc_id     = aws_vpc.noname_vpc.id
-  cidr_block = "10.0.1.0/24"
+  vpc_id            = aws_vpc.noname_vpc.id
+  cidr_block        = "10.0.1.0/24"
   availability_zone = var.aws_az
   tags = {
     Name = "${var.name_prefix}-subnet"
@@ -62,7 +62,7 @@ data "http" "myip" {
 resource "aws_security_group" "noname_security_group" {
   name        = "${var.name_prefix}-sg"
   description = "Allow inbound HTTPS traffic and outbound all "
-  vpc_id = aws_vpc.noname_vpc.id
+  vpc_id      = aws_vpc.noname_vpc.id
   ingress {
     description = "HTTPS"
     from_port   = 443
@@ -70,7 +70,7 @@ resource "aws_security_group" "noname_security_group" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-   ingress {
+  ingress {
     description = "SSH"
     from_port   = 22
     to_port     = 22
@@ -90,13 +90,13 @@ resource "aws_security_group" "noname_security_group" {
 
 # Associate route table with subnet
 resource "aws_route_table_association" "a" {
-  subnet_id = aws_subnet.noname_subnet.id
+  subnet_id      = aws_subnet.noname_subnet.id
   route_table_id = aws_route_table.noname_routetable.id
 }
 
 # Grabs the AMI for the latest Amazon Linux 2
 data "aws_ami" "amazon-2" {
-  owners = ["amazon"]
+  owners      = ["amazon"]
   most_recent = true
 
   filter {
@@ -136,10 +136,10 @@ data "aws_ami" "rhel" {
 
 # Create the EC2 instance and install Noname
 resource "aws_instance" "nonameserver" {
-  depends_on = [aws_internet_gateway.noname_gw]
-  ami           = var.os_type == "AWS" ? "${data.aws_ami.amazon-2.id}" : (var.os_type == "UBUNTU" ? "${data.aws_ami.ubuntu.id}" : "${data.aws_ami.rhel.id}")
-  instance_type = "m5.2xlarge"
-  subnet_id = aws_subnet.noname_subnet.id
+  depends_on        = [aws_internet_gateway.noname_gw]
+  ami               = var.os_type == "AWS" ? "${data.aws_ami.amazon-2.id}" : (var.os_type == "UBUNTU" ? "${data.aws_ami.ubuntu.id}" : "${data.aws_ami.rhel.id}")
+  instance_type     = "m5.2xlarge"
+  subnet_id         = aws_subnet.noname_subnet.id
   availability_zone = var.aws_az
   root_block_device {
     encrypted = true
@@ -158,13 +158,13 @@ resource "aws_instance" "nonameserver" {
   }
   key_name = var.noname_key_name
   user_data = templatefile("${path.module}/ec2_setup.sh", {
-    package_url: var.package_url
+    package_url : var.package_url
   })
 }
 
 # Create and assign Elastic IP
 resource "aws_eip" "noname_eip" {
-  vpc = true
+  vpc      = true
   instance = aws_instance.nonameserver.id
   tags = {
     Name = "${var.name_prefix}-eip"

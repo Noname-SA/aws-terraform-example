@@ -1,18 +1,18 @@
 # Prefix to use when naming all created resources
 variable "name_prefix" {
-  type = string
+  type    = string
   default = "###"
 }
 
 # Package URL provided by Noname. Must match OS deployment type - see AMI in .tf
 variable "package_url" {
-  type = string
+  type    = string
   default = "###"
 }
 
 # Set this variable to UBUNTU, RHEL, or AWS
 variable "os_type" {
-  type = string
+  type    = string
   default = "UBUNTU"
 }
 
@@ -42,7 +42,7 @@ variable "aws_region" {
 
 # Availability zone within region
 variable "aws_az" {
-  type = string
+  type    = string
   default = "us-east-2a"
 }
 

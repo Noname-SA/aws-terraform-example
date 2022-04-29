@@ -1,5 +1,5 @@
-### Note that this example may create resources which can cost money. Run `$ terraform destroy` when you don't need these resources.
-
+> **Warning:**
+> Note that this example may create resources which can cost money. Run `$ terraform destroy` when you don't need these resources.
 
 # Noname AWS EC2 Terraform Example
 

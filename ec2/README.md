@@ -1,6 +1,6 @@
 # AWS EC2 Terraform Script
 
-This terraform script will automatically create a Noname server installed on the latest AWS Linux 2. After instantiating resources, the Noname platform itself will be installed which takes 15-20 minutes at a minimum. You can use `sudo docker ps` to check when the docker images have been fully added; the instance will reboot after completing.
+This terraform script will automatically create a Noname server installed on either Ubuntu (latest), AWS Linux 2 (latest), or RHEL 7 (latest). After instantiating resources, the Noname platform itself will be installed which takes 15-20 minutes at a minimum. You can use `sudo docker ps` to check when the docker images have been fully added; the instance will reboot after completing.
 
 Note: Please remove Elastic IP resource if you are planning to access it using private IP.
 

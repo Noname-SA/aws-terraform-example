@@ -22,6 +22,12 @@ variable "remote_engine_name" {
   default = "remoteEngine1"
 }
 
+# Remote engine name
+variable "remote_engine_urls" {
+  type    = string
+  default = "remoteEngine1"
+}
+
 # Set this variable to UBUNTU, RHEL, or AWS
 variable "os_type" {
   type    = string

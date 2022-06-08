@@ -59,20 +59,6 @@ resource "aws_security_group" "noname_security_group" {
   name        = "${var.name_prefix}-sg"
   description = "Allow inbound HTTPS traffic and outbound all "
   vpc_id      = aws_vpc.noname_vpc.id
-  ingress {
-    description = "HTTPS"
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    description = "SSH"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = [var.noname_cidr, "${chomp(data.http.myip.body)}/32"]
-  }
   egress {
     from_port   = 0
     to_port     = 0
@@ -107,7 +93,7 @@ data "aws_ami" "ubuntu" {
 
   filter {
     name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-20220419"]
   }
 
   filter {

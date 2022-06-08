@@ -8,11 +8,7 @@ terraform {
 }
 
 # Configure the AWS Provider
-provider "aws" {
-  region     = var.aws_region
-  access_key = var.access_key
-  secret_key = var.secret_key
-}
+provider "aws" {}
 
 #Creation of VPC
 resource "aws_vpc" "noname_vpc" {
@@ -157,21 +153,5 @@ resource "aws_instance" "nonameserver" {
     Name = "${var.name_prefix}-remote-engine"
   }
   key_name = var.noname_key_name
-  user_data = templatefile("${path.module}/scripts/ec2_setup_${var.os_type}.sh", {
-    package_url : var.package_url,
-    noname_management_host : var.noname_management_host,
-    remote_engine_name : var.remote_engine_name
-  })
-}
 
-# Create and assign Elastic IP
-resource "aws_eip" "noname_eip" {
-  vpc      = true
-  instance = aws_instance.nonameserver.id
-  tags = {
-    Name = "${var.name_prefix}-eip"
-  }
-  depends_on = [
-    aws_instance.nonameserver
-  ]
 }

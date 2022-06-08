@@ -139,5 +139,10 @@ resource "aws_instance" "nonameserver" {
     Name = "${var.name_prefix}-remote-engine"
   }
   key_name = var.noname_key_name
-
+  user_data = templatefile("${path.module}/scripts/ec2_setup_${var.os_type}.sh", {
+    package_url : var.package_url,
+    noname_management_host : var.noname_management_host,
+    remote_engine_name : var.remote_engine_name
+    remote_engine_urls : var.remote_engine_urls
+  })
 }

@@ -1,7 +1,7 @@
 #! /bin/bash
-sudo yum update -y
-sudo yum install wget -y
-sudo mkdir /opt/noname
+sudo apt-get update -y
+sudo apt-get install wget -y
+sudo mkdir -p /opt/noname
 sudo wget -O nonamesecurity.tar.gz ${package_url}
 sudo tar -zxf nonamesecurity.tar.gz -C /opt/noname
 cd /opt/noname

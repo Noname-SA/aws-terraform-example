@@ -51,6 +51,6 @@ variable "network_interface_id" {
 
 variable "vxlanid" {
   type = number
-  description = "VXLAN ID for traffic mirroring session. AWS traffic mirroring starts at 131073 for 1, 131073 for 2, 131073 for 3, etc"
+  description = "VXLAN ID for traffic mirroring session. AWS traffic mirroring starts at 131073 for 1, 131074 for 2, 131075 for 3, etc"
   default = 131073
 }

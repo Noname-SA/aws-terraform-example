@@ -2,12 +2,6 @@
 # variables for noname-remote-engine terraform module #
 #######################################################
 
-variable "name_prefix" {
-  type        = string
-  default     = "noname"
-  description = "Prefix to use when naming all created resources"
-}
-
 variable "aws_availability_zone" {
   type        = string
   description = "name of desired aws availability zone"
@@ -20,7 +14,13 @@ variable "common_tags" {
   description = "map of name/value pairs for common tags"
 }
 
-variable "noname_management_host" {
+variable "name_prefix" {
+  type        = string
+  default     = "noname"
+  description = "Prefix to use when naming all created resources"
+}
+
+variable "noname_management_ip" {
   type        = string
   description = "Management host for Noname"
 }
@@ -41,21 +41,23 @@ variable "remote_engine_instance_type" {
   default     = "m5.2xlarge"
 }
 
-# Set this variable to UBUNTU, RHEL, or AWS
 variable "remote_engine_os_type" {
   type        = string
   description = "OS type to run noname remote engine, one of AWS|RHEL|UBUNTU"
   default     = "AWS"
 }
 
-variable "remote_engine_name" {
+variable "noname_collector_name" {
   type        = string
-  default     = "remoteEngine1"
-  description = "remote engine name"
+  description = "remote platform name"
 }
 
-variable "remote_engine_urls" {
+variable "noname_collector_urls" {
   type        = string
-  default     = "remoteEngine1"
-  description = "remote engine urls to pass to remote engine"
+  description = "remote platform urls to pass to remote platform"
+}
+
+variable "noname_remote_engine_keys" {
+  type        = string
+  description = "remote engine keys"
 }

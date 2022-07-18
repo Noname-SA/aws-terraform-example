@@ -29,9 +29,7 @@ resource "aws_lb" "noname" {
   load_balancer_type = "network"
   subnets            = [var.noname_subnet_id]
 
-  tags = {
-    Name = "nnw-${var.name_prefix}-nlb"
-  }
+  tags               = var.common_tags
 }
 
 # Create the NLB listener for traffic mirroring session
@@ -47,20 +45,16 @@ resource "aws_lb_listener" "trafficmirroring" {
 
 # Create mirroring target
 resource "aws_ec2_traffic_mirror_target" "noname" {
-  description               = "${var.name_prefix}-workshop-tnlb"
+  description               = "${var.name_prefix}-tm-target"
   network_load_balancer_arn = aws_lb.noname.arn
-  tags = {
-    Name = "${var.name_prefix}-tm-target"
-  }
+  tags                      = var.common_tags
 }
 
 # Create mirroring filter
 resource "aws_ec2_traffic_mirror_filter" "filter" {
-  description      = "${var.name_prefix}-workshop-filter"
+  description      = "${var.name_prefix}-tm-filter"
   network_services = ["amazon-dns"]
-  tags = {
-    Name = "${var.name_prefix}-tm-filter"
-  }
+  tags             = var.common_tags
 }
 
 # Create filter rules (in)
@@ -89,13 +83,13 @@ resource "aws_ec2_traffic_mirror_filter_rule" "ruleout" {
 
 # Create mirroring session
 resource "aws_ec2_traffic_mirror_session" "session" {
-  description              = "${var.name_prefix}-tms"
-  network_interface_id     = var.network_interface_id
-  session_number           = 1
+  count                    = length(var.network_interface_ids)
+  description              = "${var.name_prefix}-tms-${count.index}"
+  network_interface_id     = var.network_interface_ids[count.index]
+  session_number           = count.index + 1
   traffic_mirror_filter_id = aws_ec2_traffic_mirror_filter.filter.id
   traffic_mirror_target_id = aws_ec2_traffic_mirror_target.noname.id
-  virtual_network_id       = var.vxlanid # set the VXLAN ID so that Noname properly identifies the source
-  tags = {
-    Name = "${var.name_prefix}-tm-session"
-  }
+  virtual_network_id       = var.virtual_network_id
+  tags                     = var.common_tags
 }
+

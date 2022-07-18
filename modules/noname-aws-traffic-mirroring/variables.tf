@@ -11,6 +11,13 @@ variable "name_prefix" {
 variable "aws_availability_zone" {
   type        = string
   description = "name of desired aws availability zone"
+  default     = "us-east-1b"
+}
+
+# map of common tags
+variable "common_tags" {
+  type        = map(string)
+  description = "map of name/value pairs for common tags"
 }
 
 variable "noname_management_host" {
@@ -25,7 +32,7 @@ variable "noname_subnet_id" {
 
 variable "package_url" {
   type        = string
-  description = "Package URL provided by Noname. Must match OS deployment type - see AMI in .tf"
+  description = "Package URL provided by Noname. Must match OS deployment type"
 }
 
 variable "remote_engine_instance_type" {
@@ -34,23 +41,32 @@ variable "remote_engine_instance_type" {
   default     = "m5.2xlarge"
 }
 
+# Set this variable to UBUNTU, RHEL, or AWS
+variable "remote_engine_os_type" {
+  type        = string
+  description = "OS type to run noname remote engine, one of AWS|RHEL|UBUNTU"
+  default     = "AWS"
+}
+
 variable "remote_engine_name" {
   type        = string
+  default     = "remoteEngine1"
   description = "remote engine name"
 }
 
 variable "remote_engine_urls" {
   type        = string
+  default     = "remoteEngine1"
   description = "remote engine urls to pass to remote engine"
 }
 
-variable "network_interface_id" {
-  type = string
-  description = "ID of the source network interface to mirror"
+variable "network_interface_ids" {
+  type        = list(string)
+  description = "List of IDs of the source networks interfaces to mirror"
 }
 
-variable "vxlanid" {
-  type = number
-  description = "VXLAN ID for traffic mirroring session. AWS traffic mirroring starts at 131073 for 1, 131074 for 2, 131075 for 3, etc"
-  default = 131073
+variable "virtual_network_id" {
+  type        = number
+  description = "set the VXLAN ID so that Noname properly identifies the source"
+  default     = 131073  # use ascending values to identify the source of the traffic
 }

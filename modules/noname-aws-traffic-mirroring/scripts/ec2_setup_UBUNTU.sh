@@ -1,6 +1,6 @@
 #! /bin/bash
-sudo apt-get update -y
-sudo apt-get install wget -y
+#sudo apt-get update -y
+#sudo apt-get install wget -y
 sudo mkdir -p /opt/noname
 sudo wget -O nonamesecurity.tar.gz ${package_url}
 sudo tar -zxf nonamesecurity.tar.gz -C /opt/noname

@@ -86,21 +86,9 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
-# get the AMI for the latest RHEL
-data "aws_ami" "rhel" {
-  most_recent = true
-
-  filter {
-    name   = "name"
-    values = ["RHEL-7.?*GA*"]
-  }
-
-  owners = ["309956199498"]
-}
-
 # Create the EC2 instance and install Noname
 resource "aws_instance" "noname_server" {
-  ami               = var.remote_engine_os_type == "AWS" ? data.aws_ami.amazon-2.id : (var.remote_engine_os_type == "UBUNTU" ? data.aws_ami.ubuntu.id : data.aws_ami.rhel.id)
+  ami               = var.remote_engine_os_type == "AWS" ? data.aws_ami.amazon-2.id : data.aws_ami.ubuntu.id
   instance_type     = var.remote_engine_instance_type
   subnet_id         = var.noname_subnet_id
   availability_zone = var.aws_availability_zone
